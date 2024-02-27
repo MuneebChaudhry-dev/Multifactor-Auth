@@ -1,5 +1,5 @@
 <template>
-  <section class="w-full h-100 bg-amber-400 flex justify-center items-center">
+  <section class="w-full h-screen bg-amber-400 flex justify-center items-center">
     <div class="w-1/3 border bg-white border-gray-300 my-8 p-8 rounded">
       <h2 class="text-black font-extrabold text-3xl text-center">Login</h2>
       <p class="text-center my-4">Add Following details to get register yourself</p>
@@ -29,13 +29,21 @@
 <script setup>
 import { ref } from 'vue'
 import axios from 'axios'
+import { useRouter } from 'vue-router'
+import { userStore } from '@/stores/user'
 
+const user = userStore()
 const userEmail = ref('')
 const userPassword = ref('')
+const router = useRouter()
 
 const loginUser = async (bodyData) => {
-  await axios.post(`${import.meta.env.VITE_API_URL}/create-user`, bodyData).then((response) => {
-    console.log(response.data)
+  await axios.post(`${import.meta.env.VITE_API_URL}/login`, bodyData).then((response) => {
+    user.userData = response.data.user
+    console.log(user.userData)
+    if (response.data.status === 'success') {
+      router.push('/profile')
+    }
   })
 }
 
@@ -47,10 +55,8 @@ const login = () => {
     }
     const response = loginUser(body)
     console.log(response)
-    fullName.value = ''
     userEmail.value = ''
     userPassword.value = ''
-    confirmPassword.value = ''
   }
 }
 </script>

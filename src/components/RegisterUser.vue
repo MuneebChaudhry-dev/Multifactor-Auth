@@ -39,19 +39,20 @@
 <script setup>
 import { ref } from 'vue'
 import axios from 'axios'
-import { userStore } from '@/stores/user'
-
-const user = userStore()
+import { useRouter } from 'vue-router'
 
 const fullName = ref('')
 const userEmail = ref('')
 const userPassword = ref('')
 const confirmPassword = ref('')
+const router = useRouter()
 
 const createUser = async (bodyData) => {
   await axios.post(`${import.meta.env.VITE_API_URL}/register`, bodyData).then((response) => {
-    user.userData = response.data
     console.log(response.data)
+    if (response.data.status === 'success') {
+      router.push('/login')
+    }
   })
 }
 
@@ -68,6 +69,8 @@ const signup = () => {
     userEmail.value = ''
     userPassword.value = ''
     confirmPassword.value = ''
+  } else {
+    console.log('Password Did not matched')
   }
 }
 </script>

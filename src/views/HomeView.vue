@@ -1,9 +1,7 @@
-<script setup>
-import MultiFactorAuth from '@/components/MultiFactorAuth.vue'
-</script>
+<script setup></script>
 
 <template>
   <main>
-    <MultiFactorAuth />
+    <h1>Hello World</h1>
   </main>
 </template>

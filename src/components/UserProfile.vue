@@ -4,9 +4,9 @@
       <div v-if="userInfo">
         <h3 class="font-semibold text-2xl capitalize">personal page</h3>
         <ul class="list-none mt-4 space-y-2">
-          <li class="text-wrap break-words">ID: {{ userInfo.ID }}</li>
-          <li>Name: {{ userInfo.Name }}</li>
-          <li>Email: {{ userInfo.Email }}</li>
+          <li class="text-wrap break-words">ID: {{ userInfo.id }}</li>
+          <li>Name: {{ userInfo.name }}</li>
+          <li>Email: {{ userInfo.email }}</li>
         </ul>
       </div>
       <div>
