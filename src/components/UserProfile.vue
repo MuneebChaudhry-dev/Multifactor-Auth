@@ -1,6 +1,6 @@
 <template>
   <div class="w-full bg-amber-400 p-8">
-    <div class="bg-white rounded p-16 flex justify-between gap-44">
+    <div class="bg-white rounded p-16 flex justify-between gap-44" v-show="!showQR">
       <div v-if="userInfo">
         <h3 class="font-semibold text-2xl capitalize">personal page</h3>
         <ul class="list-none mt-4 space-y-2">
@@ -17,12 +17,13 @@
             class="px-4 py-2 rounded-lg bg-amber-300 hover:bg-amber-400 font-medium"
             @click="toggle2FA"
           >
-            {{ is2FA ? 'Disable 2FA' : 'Setup 2FA' }}
+            {{ userInfo.otp_enabled ? 'Disable 2FA' : 'Setup 2FA' }}
           </button>
         </div>
       </div>
     </div>
-    <div class="bg-white rounded flex justify-center mt-8">
+    <!---Modal Start here-->
+    <div class="bg-white rounded flex justify-center mt-8" v-show="showQR">
       <div class="w-1/2 border border-gray-300 my-8">
         <div class="p-4 border-b border-gray-300">
           <h3 class="font-semibold text-2xl">Two-Factor Authentication (2FA)</h3>
@@ -64,13 +65,17 @@
               type="text"
               class="p-2 text-lg border border-gray-300 rounded-lg outline-1 outline-amber-300"
               placeholder="Authentication Code"
+              v-model="otp"
             />
           </div>
           <div class="my-4 flex justify-start gap-4">
             <button class="py-2 px-6 text-gray-500 font-medium border border-slate-200 rounded-lg">
               Close
             </button>
-            <button class="py-2 px-6 text-white font-medium bg-amber-400 rounded-lg">
+            <button
+              class="py-2 px-6 text-white font-medium bg-amber-400 rounded-lg"
+              @click="verify2FA"
+            >
               Verify & Activate
             </button>
             <button></button>
@@ -78,6 +83,7 @@
         </div>
       </div>
     </div>
+    <!--Modal Ends here--->
     <div class="bg-white rounded flex justify-center mt-8 hidden">
       <div class="w-1/4 border border-gray-300 my-8 p-8">
         <h2 class="text-black font-extrabold text-3xl text-center">Two-Factor Authentication</h2>
@@ -108,7 +114,9 @@ const user = userStore()
 const userInfo = ref(null)
 const otpInfo = ref(null)
 const qrImageData = ref('')
+const otp = ref(null)
 const is2FA = ref(false)
+const showQR = ref(false)
 
 const toggle2FA = () => {
   if (is2FA.value) {
@@ -120,23 +128,23 @@ const toggle2FA = () => {
 
 const setup2FA = async () => {
   is2FA.value = true
+
   const userId = { user_id: userInfo.value.id }
   await axios.post(`${import.meta.env.VITE_API_URL}/otp/generate`, userId).then((response) => {
     otpInfo.value = response.data
-
     QRCode.toDataURL(otpInfo.value.otpauth_url).then((response) => {
       qrImageData.value = response
+      showQR.value = true
     })
   })
 }
 const verify2FA = async () => {
-  const payload = { user_id: userInfo.value.id }
-  await axios.post(`${import.meta.env.VITE_API_URL}/otp/generate`, userId).then((response) => {
-    otpInfo.value = response.data
-
-    QRCode.toDataURL(otpInfo.value.otpauth_url).then((response) => {
-      qrImageData.value = response
-    })
+  const payload = { user_id: userInfo.value.id, token: otp.value }
+  await axios.post(`${import.meta.env.VITE_API_URL}/otp/verify`, payload).then((response) => {
+    console.log(response.data)
+    if (response.data.otp_verified) {
+      showQR.value = false
+    }
   })
 }
 
