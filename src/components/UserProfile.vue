@@ -96,9 +96,11 @@
     </div>
   </div>
 </template>
-<script setup lang="ts">
+<script setup lang="">
 import { ref, watch, watchEffect } from 'vue'
 import axios from 'axios'
+import QRCode from 'qrcode'
+
 import { userStore } from '@/stores/user'
 
 const user = userStore()
@@ -118,19 +120,24 @@ const toggle2FA = () => {
 
 const setup2FA = async () => {
   is2FA.value = true
-  await axios.get(`${import.meta.env.VITE_API_URL}/generate-otp`).then((response) => {
+  const userId = { user_id: userInfo.value.id }
+  await axios.post(`${import.meta.env.VITE_API_URL}/otp/generate`, userId).then((response) => {
     otpInfo.value = response.data
-    console.log(otpInfo.value)
-  })
-  const response = await axios.get(`${import.meta.env.VITE_API_URL}/qrcode`, {
-    responseType: 'arraybuffer'
-  })
 
-  const base64Image = btoa(
-    new Uint8Array(response.data).reduce((data, byte) => data + String.fromCharCode(byte), '')
-  )
+    QRCode.toDataURL(otpInfo.value.otpauth_url).then((response) => {
+      qrImageData.value = response
+    })
+  })
+}
+const verify2FA = async () => {
+  const payload = { user_id: userInfo.value.id }
+  await axios.post(`${import.meta.env.VITE_API_URL}/otp/generate`, userId).then((response) => {
+    otpInfo.value = response.data
 
-  qrImageData.value = `data:image/png;base64,${base64Image}`
+    QRCode.toDataURL(otpInfo.value.otpauth_url).then((response) => {
+      qrImageData.value = response
+    })
+  })
 }
 
 watchEffect(() => {
