@@ -1,12 +1,12 @@
 <template>
   <div class="w-full bg-amber-400 p-8">
     <div class="bg-white rounded p-16 flex justify-between gap-44">
-      <div>
+      <div v-if="userInfo">
         <h3 class="font-semibold text-2xl capitalize">personal page</h3>
         <ul class="list-none mt-4 space-y-2">
-          <li class="text-wrap break-words">ID: ewrqwennjkn1234-c4fewre-65436-432knfsjdnfdc</li>
-          <li>Name: Admin</li>
-          <li>Email: admin@admin.com</li>
+          <li class="text-wrap break-words">ID: {{ userInfo.ID }}</li>
+          <li>Name: {{ userInfo.Name }}</li>
+          <li>Email: {{ userInfo.Email }}</li>
         </ul>
       </div>
       <div>
@@ -45,14 +45,14 @@
               Scan QR Code
             </h4>
             <div class="flex justify-center py-4">
-              <img src="../../qr.png" />
+              <img :src="qrImageData" />
             </div>
           </div>
           <div class="mt-4">
             <h4 class="font-semibold text-lg text-amber-400 border-b border-gray-300">
               Or Enter Code Into Your App
             </h4>
-            <p class="py-3">SecretKey: Qweywytrsty456dtr73dtrsykt79559fuy</p>
+            <p class="py-3">SecretKey: {{ otpInfo?.random_secret }}</p>
           </div>
           <div class="mt-4 border-b border-gray-300 pb-2">
             <h4 class="font-semibold text-lg text-amber-400 border-b border-gray-300">
@@ -78,7 +78,7 @@
         </div>
       </div>
     </div>
-    <div class="bg-white rounded flex justify-center mt-8">
+    <div class="bg-white rounded flex justify-center mt-8 hidden">
       <div class="w-1/4 border border-gray-300 my-8 p-8">
         <h2 class="text-black font-extrabold text-3xl text-center">Two-Factor Authentication</h2>
         <p class="text-center my-4">
@@ -99,7 +99,13 @@
 <script setup lang="ts">
 import { ref, watch, watchEffect } from 'vue'
 import axios from 'axios'
+import { userStore } from '@/stores/user'
 
+const user = userStore()
+
+const userInfo = ref(null)
+const otpInfo = ref(null)
+const qrImageData = ref('')
 const is2FA = ref(false)
 
 const toggle2FA = () => {
@@ -110,17 +116,27 @@ const toggle2FA = () => {
   }
 }
 
-const setup2FA = () => {
+const setup2FA = async () => {
   is2FA.value = true
-}
+  await axios.get(`${import.meta.env.VITE_API_URL}/generate-otp`).then((response) => {
+    otpInfo.value = response.data
+    console.log(otpInfo.value)
+  })
+  const response = await axios.get(`${import.meta.env.VITE_API_URL}/qrcode`, {
+    responseType: 'arraybuffer' // Set response type to array buffer to receive binary data
+  })
 
-const getUser = async () => {
-  const userData = await axios.get(`${import.meta.env.VITE_API_URL}/get-user`)
-  console.log(userData.data)
+  // Convert the received image data to Base64 format
+  const base64Image = btoa(
+    new Uint8Array(response.data).reduce((data, byte) => data + String.fromCharCode(byte), '')
+  )
+
+  // Construct the data URL for the image
+  qrImageData.value = `data:image/png;base64,${base64Image}`
 }
 
 watchEffect(() => {
-  getUser()
+  userInfo.value = user.userData
 })
 </script>
 <style></style>
