@@ -123,15 +123,13 @@ const setup2FA = async () => {
     console.log(otpInfo.value)
   })
   const response = await axios.get(`${import.meta.env.VITE_API_URL}/qrcode`, {
-    responseType: 'arraybuffer' // Set response type to array buffer to receive binary data
+    responseType: 'arraybuffer'
   })
 
-  // Convert the received image data to Base64 format
   const base64Image = btoa(
     new Uint8Array(response.data).reduce((data, byte) => data + String.fromCharCode(byte), '')
   )
 
-  // Construct the data URL for the image
   qrImageData.value = `data:image/png;base64,${base64Image}`
 }
 

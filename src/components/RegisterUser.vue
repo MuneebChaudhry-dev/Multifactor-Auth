@@ -1,5 +1,5 @@
 <template>
-  <section class="w-full h-100 bg-amber-400 flex justify-center items-center">
+  <section class="w-full min-h-screen bg-amber-400 flex justify-center items-center">
     <div class="w-1/3 border bg-white border-gray-300 my-8 p-8 rounded">
       <h2 class="text-black font-extrabold text-3xl text-center">Register</h2>
       <p class="text-center my-4">Add Following details to get register yourself</p>
@@ -49,8 +49,9 @@ const userPassword = ref('')
 const confirmPassword = ref('')
 
 const createUser = async (bodyData) => {
-  await axios.post(`${import.meta.env.VITE_API_URL}/create-user`, bodyData).then((response) => {
+  await axios.post(`${import.meta.env.VITE_API_URL}/register`, bodyData).then((response) => {
     user.userData = response.data
+    console.log(response.data)
   })
 }
 
