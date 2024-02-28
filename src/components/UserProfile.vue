@@ -22,7 +22,7 @@
         </div>
       </div>
     </div>
-    <!---Modal Start here-->
+    <!---Show QR here-->
     <div class="bg-white rounded flex justify-center mt-8" v-show="showQR">
       <div class="w-1/2 border border-gray-300 my-8">
         <div class="p-4 border-b border-gray-300">
@@ -81,23 +81,6 @@
             <button></button>
           </div>
         </div>
-      </div>
-    </div>
-    <!--Modal Ends here--->
-    <div class="bg-white rounded flex justify-center mt-8 hidden">
-      <div class="w-1/4 border border-gray-300 my-8 p-8">
-        <h2 class="text-black font-extrabold text-3xl text-center">Two-Factor Authentication</h2>
-        <p class="text-center my-4">
-          Open the two-step verification app from your mobile and get your verification code
-        </p>
-        <input
-          type="text"
-          class="p-2 w-full text-lg border border-gray-300 rounded-lg outline-1 outline-amber-300"
-          placeholder="Authentication Code"
-        />
-        <button class="w-full my-3 py-2 px-6 text-white font-medium bg-amber-400 rounded-lg">
-          Authenticate
-        </button>
       </div>
     </div>
   </div>

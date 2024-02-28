@@ -42,7 +42,11 @@ const loginUser = async (bodyData) => {
     user.userData = response.data.user
     console.log(user.userData)
     if (response.data.status === 'success') {
-      router.push('/profile')
+      if (user.userData.otp_enabled) {
+        router.push('/validate')
+      } else {
+        router.push('/profile')
+      }
     }
   })
 }
