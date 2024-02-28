@@ -7,25 +7,25 @@
         type="text"
         class="p-2 mt-2 w-full text-lg border border-gray-300 rounded-lg outline-1 outline-amber-300"
         placeholder="Full Name"
-        v-model="fullName"
+        v-model="user.fullname"
       />
       <input
         type="email"
         class="p-2 mt-2 w-full text-lg border border-gray-300 rounded-lg outline-1 outline-amber-300"
         placeholder="Email"
-        v-model="userEmail"
+        v-model="user.email"
       />
       <input
         type="password"
         class="p-2 mt-2 w-full text-lg border border-gray-300 rounded-lg outline-1 outline-amber-300"
         placeholder="Password"
-        v-model="userPassword"
+        v-model="user.password"
       />
       <input
         type="password"
         class="p-2 mt-2 w-full text-lg border border-gray-300 rounded-lg outline-1 outline-amber-300"
         placeholder="Confirm Password"
-        v-model="confirmPassword"
+        v-model="user.confirmPass"
       />
       <button
         class="w-full my-3 py-2 px-6 text-white font-medium bg-amber-400 rounded-lg"
@@ -41,37 +41,39 @@ import { ref } from 'vue'
 import axios from 'axios'
 import { useRouter } from 'vue-router'
 
-const fullName = ref('')
-const userEmail = ref('')
-const userPassword = ref('')
-const confirmPassword = ref('')
 const router = useRouter()
 
-const createUser = async (bodyData) => {
-  await axios.post(`${import.meta.env.VITE_API_URL}/register`, bodyData).then((response) => {
+const defaultUser = {
+  fullname: '',
+  email: '',
+  password: '',
+  confirmPass: ''
+}
+
+const user = ref(defaultUser)
+
+const signup = () => {
+  if (user.value.password === user.value.confirmPass) {
+    const payload = {
+      Name: user.value.fullname,
+      Email: user.value.email,
+      Password: user.value.password
+    }
+    const response = createUser(payload)
+    console.log(response)
+    user.value = defaultUser
+  } else {
+    alert("Password Doesn't Match")
+  }
+}
+
+const createUser = async (payload) => {
+  await axios.post(`${import.meta.env.VITE_API_URL}/register`, payload).then((response) => {
     console.log(response.data)
     if (response.data.status === 'success') {
       router.push('/login')
     }
   })
-}
-
-const signup = () => {
-  if (userPassword.value === confirmPassword.value) {
-    const body = {
-      Name: fullName.value,
-      Email: userEmail.value,
-      Password: userPassword.value
-    }
-    const response = createUser(body)
-    console.log(response)
-    fullName.value = ''
-    userEmail.value = ''
-    userPassword.value = ''
-    confirmPassword.value = ''
-  } else {
-    console.log('Password Did not matched')
-  }
 }
 </script>
 <style lang=""></style>
