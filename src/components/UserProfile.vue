@@ -102,8 +102,8 @@ const is2FA = ref(false)
 const showQR = ref(false)
 
 const toggle2FA = () => {
-  if (is2FA.value) {
-    is2FA.value = false
+  if (userInfo.value.otp_enabled) {
+    disable2FA()
   } else {
     setup2FA()
   }
@@ -126,7 +126,18 @@ const verify2FA = async () => {
   await axios.post(`${import.meta.env.VITE_API_URL}/otp/verify`, payload).then((response) => {
     console.log(response.data)
     if (response.data.otp_verified) {
+      alert('OTP Verified')
       showQR.value = false
+    }
+  })
+}
+const disable2FA = async () => {
+  const payload = { user_id: userInfo.value.id }
+  await axios.post(`${import.meta.env.VITE_API_URL}/otp/disable`, payload).then((response) => {
+    console.log(response.data)
+    if (response.data.otp_disabled) {
+      alert('OTP Disabled')
+      user.userData = response.data.user
     }
   })
 }
