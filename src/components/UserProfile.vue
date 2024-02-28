@@ -53,7 +53,7 @@
             <h4 class="font-semibold text-lg text-amber-400 border-b border-gray-300">
               Or Enter Code Into Your App
             </h4>
-            <p class="py-3">SecretKey: {{ otpInfo?.random_secret }}</p>
+            <p class="py-3">SecretKey: {{ otpInfo?.base32 }}</p>
           </div>
           <div class="mt-4 border-b border-gray-300 pb-2">
             <h4 class="font-semibold text-lg text-amber-400 border-b border-gray-300">
