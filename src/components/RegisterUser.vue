@@ -59,11 +59,7 @@ const signup = async () => {
       Email: user.value.email,
       Password: user.value.password
     }
-    const { data, error } = await useAxios(
-      `${import.meta.env.VITE_API_URL}/register`,
-      'POST',
-      payload
-    )
+    const { data, error } = await useAxios(`/register`, 'POST', payload)
     console.log(data.value)
     if (data.value.status === 'success') {
       router.push('/login')

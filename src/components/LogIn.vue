@@ -43,7 +43,7 @@ const login = async () => {
       Email: userEmail.value,
       Password: userPassword.value
     }
-    const { data, error } = await useAxios(`${import.meta.env.VITE_API_URL}/login`, 'POST', payload)
+    const { data, error } = await useAxios(`/login`, 'POST', payload)
     updateUser(data.value.user)
     if (data.value.status === 'success') {
       const user = getUser()

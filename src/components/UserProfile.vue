@@ -114,11 +114,7 @@ const setup2FA = async () => {
   is2FA.value = true
 
   const payload = { user_id: userInfo.value?.id }
-  const { data, error } = await useAxios(
-    `${import.meta.env.VITE_API_URL}/otp/generate`,
-    'POST',
-    payload
-  )
+  const { data, error } = await useAxios(`/otp/generate`, 'POST', payload)
   if (data.value) {
     otpInfo.value = data.value
     QRCode.toDataURL(otpInfo.value.otpauth_url).then((response) => {
@@ -131,30 +127,23 @@ const setup2FA = async () => {
 }
 const verify2FA = async () => {
   const payload = { user_id: userInfo.value?.id, token: otp.value }
-  const { data, error } = await useAxios(
-    `${import.meta.env.VITE_API_URL}/otp/verify`,
-    'POST',
-    payload
-  )
+  const { data, error } = await useAxios(`/otp/verify`, 'POST', payload)
   if (data.value && data.value.otp_verified) {
     alert('OTP Verified')
     showQR.value = false
+  } else {
+    alert(error)
   }
 }
 const disable2FA = async () => {
   const payload = { user_id: userInfo.value?.id }
-  const { data, error } = await useAxios(
-    `${import.meta.env.VITE_API_URL}/otp/disable`,
-    'POST',
-    payload
-  )
+  const { data, error } = await useAxios(`/otp/disable`, 'POST', payload)
   if (data.value && data.value.otp_disabled) {
     alert('OTP Disabled')
     updateUser(data.value.user)
+  } else {
+    alert(error)
   }
-  await axios.post(`${import.meta.env.VITE_API_URL}/otp/disable`, payload).then((response) => {
-    console.log(response.data)
-  })
 }
 
 watchEffect(() => {

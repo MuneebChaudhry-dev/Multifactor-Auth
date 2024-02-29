@@ -1,6 +1,8 @@
 import { ref } from 'vue'
 import axios from 'axios'
-
+const api = axios.create({
+  baseURL: import.meta.env.VITE_API_URL
+})
 export const useAxios = async (url: string, method: string, payload: any = null) => {
   const data = ref(null)
   const error = ref('')
@@ -8,19 +10,19 @@ export const useAxios = async (url: string, method: string, payload: any = null)
     let response = null
     switch (method) {
       case 'GET':
-        response = await axios.get(url, payload)
+        response = await api.get(url, payload)
         break
       case 'POST':
-        response = await axios.post(url, payload)
+        response = await api.post(url, payload)
         break
       case 'PUT':
-        response = await axios.put(url, payload)
+        response = await api.put(url, payload)
         break
       case 'PATCH':
-        response = await axios.patch(url, payload)
+        response = await api.patch(url, payload)
         break
       case 'DELETE':
-        response = await axios.delete(url, payload)
+        response = await api.delete(url, payload)
         break
       default:
         error.value = 'Invalid Request Method'
