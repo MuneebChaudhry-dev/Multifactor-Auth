@@ -1,3 +1,39 @@
+<script setup>
+import { ref } from 'vue'
+import { useAxios } from '../composable/axios'
+import { useRouter } from 'vue-router'
+
+const router = useRouter()
+
+const defaultUser = {
+  fullname: '',
+  email: '',
+  password: '',
+  confirmPass: ''
+}
+
+const user = ref(defaultUser)
+
+const signup = async () => {
+  if (user.value.password === user.value.confirmPass) {
+    const payload = {
+      Name: user.value.fullname,
+      Email: user.value.email,
+      Password: user.value.password
+    }
+    const { data, error } = await useAxios(`/register`, 'POST', payload)
+    console.log(data.value)
+    if (data.value.status === 'success') {
+      router.push('/login')
+    } else {
+      alert('Error', error.value)
+    }
+    user.value = defaultUser
+  } else {
+    alert("Password Doesn't Match")
+  }
+}
+</script>
 <template>
   <section class="w-full min-h-screen bg-amber-400 flex justify-center items-center">
     <div class="w-1/3 border bg-white border-gray-300 my-8 p-8 rounded">
@@ -36,40 +72,5 @@
     </div>
   </section>
 </template>
-<script setup>
-import { ref } from 'vue'
-import { useAxios } from '../composable/axios'
-import { useRouter } from 'vue-router'
 
-const router = useRouter()
-
-const defaultUser = {
-  fullname: '',
-  email: '',
-  password: '',
-  confirmPass: ''
-}
-
-const user = ref(defaultUser)
-
-const signup = async () => {
-  if (user.value.password === user.value.confirmPass) {
-    const payload = {
-      Name: user.value.fullname,
-      Email: user.value.email,
-      Password: user.value.password
-    }
-    const { data, error } = await useAxios(`/register`, 'POST', payload)
-    console.log(data.value)
-    if (data.value.status === 'success') {
-      router.push('/login')
-    } else {
-      alert('Error', error.value)
-    }
-    user.value = defaultUser
-  } else {
-    alert("Password Doesn't Match")
-  }
-}
-</script>
 <style lang=""></style>
