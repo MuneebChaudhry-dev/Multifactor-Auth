@@ -2,7 +2,7 @@
   <section class="w-full h-screen bg-amber-400 flex justify-center items-center">
     <div class="w-1/3 border bg-white border-gray-300 my-8 p-8 rounded">
       <h2 class="text-black font-extrabold text-3xl text-center">Login</h2>
-      <p class="text-center my-4">Add Following details to get register yourself</p>
+      <p class="text-center my-4">Add the following credentials</p>
 
       <input
         type="email"
