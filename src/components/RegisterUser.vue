@@ -38,7 +38,7 @@
 </template>
 <script setup>
 import { ref } from 'vue'
-import axios from 'axios'
+import { useAxios } from '../composable/axios'
 import { useRouter } from 'vue-router'
 
 const router = useRouter()
@@ -52,28 +52,28 @@ const defaultUser = {
 
 const user = ref(defaultUser)
 
-const signup = () => {
+const signup = async () => {
   if (user.value.password === user.value.confirmPass) {
     const payload = {
       Name: user.value.fullname,
       Email: user.value.email,
       Password: user.value.password
     }
-    const response = createUser(payload)
-    console.log(response)
+    const { data, error } = await useAxios(
+      `${import.meta.env.VITE_API_URL}/register`,
+      'POST',
+      payload
+    )
+    console.log(data.value)
+    if (data.value.status === 'success') {
+      router.push('/login')
+    } else {
+      alert('Error', error.value)
+    }
     user.value = defaultUser
   } else {
     alert("Password Doesn't Match")
   }
-}
-
-const createUser = async (payload) => {
-  await axios.post(`${import.meta.env.VITE_API_URL}/register`, payload).then((response) => {
-    console.log(response.data)
-    if (response.data.status === 'success') {
-      router.push('/login')
-    }
-  })
 }
 </script>
 <style lang=""></style>
