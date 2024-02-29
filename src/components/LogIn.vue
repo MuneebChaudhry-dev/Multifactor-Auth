@@ -16,10 +16,10 @@ const login = async () => {
       Password: userPassword.value
     }
     const { data, error } = await useAxios(`/login`, 'POST', payload)
-    updateUser(data.value.user)
+
     if (data.value.status === 'success') {
-      const user = getUser()
-      if (user.otp_enabled) {
+      updateUser(data.value.user)
+      if (data.value.user.otp_enabled) {
         router.push('/validate')
       } else {
         alert(error.value)
