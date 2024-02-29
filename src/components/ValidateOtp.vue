@@ -22,22 +22,27 @@
 </template>
 <script setup>
 import { ref } from 'vue'
-import axios from 'axios'
+import { useAxios } from '../composable/axios'
 import { useRouter } from 'vue-router'
 import { userStore } from '@/stores/user'
 
-const user = userStore()
+const { getUser } = userStore()
 const otp = ref(null)
 const router = useRouter()
 
 const validate2FA = async () => {
-  const payload = { user_id: user.userData.id, token: otp.value }
-  await axios.post(`${import.meta.env.VITE_API_URL}/otp/validate`, payload).then((response) => {
-    console.log(response.data)
-    if (response.data.otp_valid) {
-      router.push('/profile')
-    }
-  })
+  const user = getUser()
+  const payload = { user_id: user.id, token: otp.value }
+  const { data, error } = await useAxios(
+    `${import.meta.env.VITE_API_URL}/otp/validate`,
+    'POST',
+    payload
+  )
+  if (data && data.value.otp_valid) {
+    router.push('/profile')
+  } else {
+    alert(error.value)
+  }
 }
 </script>
 <style lang=""></style>
