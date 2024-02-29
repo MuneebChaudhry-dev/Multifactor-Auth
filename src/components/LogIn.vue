@@ -32,16 +32,17 @@ import axios from 'axios'
 import { useRouter } from 'vue-router'
 import { userStore } from '@/stores/user'
 
-const user = userStore()
+const { getUser, updateUser } = userStore()
 const userEmail = ref('')
 const userPassword = ref('')
 const router = useRouter()
 
 const loginUser = async (bodyData) => {
   await axios.post(`${import.meta.env.VITE_API_URL}/login`, bodyData).then((response) => {
-    user.updateUser(response.data.user)
+    updateUser(response.data.user)
     if (response.data.status === 'success') {
-      if (user.userData.otp_enabled) {
+      const user = getUser()
+      if (user.otp_enabled) {
         router.push('/validate')
       } else {
         router.push('/profile')

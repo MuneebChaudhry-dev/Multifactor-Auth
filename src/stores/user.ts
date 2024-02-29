@@ -10,8 +10,11 @@ export const userStore = defineStore('user', () => {
     console.log('Pinia UserData', userData.value)
   }
 
+  const getUser = () => userData.value
+
   return {
     userData,
-    updateUser
+    updateUser,
+    getUser
   }
 })

@@ -4,9 +4,9 @@
       <div>
         <h3 class="font-semibold text-2xl capitalize">personal page</h3>
         <ul class="list-none mt-4 space-y-2">
-          <li class="text-wrap break-words">ID: {{ user.userData?.id }}</li>
-          <li>Name: {{ user.userData?.name }}</li>
-          <li>Email: {{ user.userData?.email }}</li>
+          <li class="text-wrap break-words">ID: {{ userInfo?.id }}</li>
+          <li>Name: {{ userInfo?.name }}</li>
+          <li>Email: {{ userInfo?.email }}</li>
         </ul>
       </div>
       <div>
@@ -17,7 +17,7 @@
             class="px-4 py-2 rounded-lg bg-amber-300 hover:bg-amber-400 font-medium"
             @click="toggle2FA"
           >
-            {{ isOtpEnabled ? 'Disable 2FA' : 'Setup 2FA' }}
+            {{ userInfo.otp_enabled ? 'Disable 2FA' : 'Setup 2FA' }}
           </button>
         </div>
       </div>
@@ -86,15 +86,15 @@
   </div>
 </template>
 <script setup lang="">
-import { ref, watch } from 'vue'
+import { ref, watchEffect } from 'vue'
 import axios from 'axios'
 import QRCode from 'qrcode'
 
 import { userStore } from '@/stores/user'
 
-const user = userStore()
+const { getUser, updateUser } = userStore()
 
-const otpInfo = ref(null)
+const userInfo = ref(null)
 const qrImageData = ref('')
 const otp = ref(null)
 const is2FA = ref(false)
@@ -102,7 +102,7 @@ const showQR = ref(false)
 const isOtpEnabled = ref(false)
 
 const toggle2FA = () => {
-  if (user.userData?.otp_enabled) {
+  if (userInfo.value?.otp_enabled) {
     disable2FA()
   } else {
     setup2FA()
@@ -112,7 +112,7 @@ const toggle2FA = () => {
 const setup2FA = async () => {
   is2FA.value = true
 
-  const userId = { user_id: user.userData.id }
+  const userId = { user_id: userInfo.value?.id }
   await axios.post(`${import.meta.env.VITE_API_URL}/otp/generate`, userId).then((response) => {
     otpInfo.value = response.data
     QRCode.toDataURL(otpInfo.value.otpauth_url).then((response) => {
@@ -122,7 +122,7 @@ const setup2FA = async () => {
   })
 }
 const verify2FA = async () => {
-  const payload = { user_id: user.userData.id, token: otp.value }
+  const payload = { user_id: userInfo.value?.id, token: otp.value }
   await axios.post(`${import.meta.env.VITE_API_URL}/otp/verify`, payload).then((response) => {
     console.log(response.data)
     if (response.data.otp_verified) {
@@ -132,26 +132,18 @@ const verify2FA = async () => {
   })
 }
 const disable2FA = async () => {
-  const payload = { user_id: user.userData.id }
+  const payload = { user_id: userInfo.value?.id }
   await axios.post(`${import.meta.env.VITE_API_URL}/otp/disable`, payload).then((response) => {
     console.log(response.data)
     if (response.data.otp_disabled) {
       alert('OTP Disabled')
-      user.updateUser(response.data.user)
+      updateUser(response.data.user)
     }
   })
 }
 
-watch(
-  () => user,
-  (newValue) => {
-    if (newValue.userData.otp_enabled) {
-      console.log('newVal', newValue)
-    }
-    // isOtpEnabled.value = newValue.
-    console.log('isOtpEnabled', isOtpEnabled.value)
-  },
-  { deep: true }
-)
+watchEffect(() => {
+  userInfo.value = getUser()
+})
 </script>
 <style></style>
