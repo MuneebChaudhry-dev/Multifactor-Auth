@@ -95,6 +95,7 @@ import { userStore } from '@/stores/user'
 const { getUser, updateUser } = userStore()
 
 const userInfo = ref(null)
+const otpInfo = ref(null)
 const qrImageData = ref('')
 const otp = ref(null)
 const is2FA = ref(false)

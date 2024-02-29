@@ -28,37 +28,33 @@
 </template>
 <script setup>
 import { ref } from 'vue'
-import axios from 'axios'
 import { useRouter } from 'vue-router'
 import { userStore } from '@/stores/user'
+import { useAxios } from '../composable/axios'
 
 const { getUser, updateUser } = userStore()
 const userEmail = ref('')
 const userPassword = ref('')
 const router = useRouter()
 
-const loginUser = async (bodyData) => {
-  await axios.post(`${import.meta.env.VITE_API_URL}/login`, bodyData).then((response) => {
-    updateUser(response.data.user)
-    if (response.data.status === 'success') {
+const login = async () => {
+  if (userPassword.value !== '' && userPassword.value !== '') {
+    const payload = {
+      Email: userEmail.value,
+      Password: userPassword.value
+    }
+    const { data, error } = await useAxios(`${import.meta.env.VITE_API_URL}/login`, 'POST', payload)
+    updateUser(data.value.user)
+    if (data.value.status === 'success') {
       const user = getUser()
       if (user.otp_enabled) {
         router.push('/validate')
       } else {
+        alert(error.value)
         router.push('/profile')
       }
     }
-  })
-}
-
-const login = () => {
-  if (userPassword.value !== '' && userPassword.value !== '') {
-    const body = {
-      Email: userEmail.value,
-      Password: userPassword.value
-    }
-    const response = loginUser(body)
-    console.log(response)
+    console.log('Login REs', data.value)
     userEmail.value = ''
     userPassword.value = ''
   }
