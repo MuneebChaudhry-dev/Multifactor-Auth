@@ -1,8 +1,17 @@
-import { ref, computed } from 'vue'
+import { ref } from 'vue'
 import { defineStore } from 'pinia'
 
 export const userStore = defineStore('user', () => {
-  const userData = ref('')
+  const userData = ref(null)
 
-  return { userData }
+  const updateUser = (payload: any) => {
+    console.log('Pinia Payload', payload)
+    userData.value = payload
+    console.log('Pinia UserData', userData.value)
+  }
+
+  return {
+    userData,
+    updateUser
+  }
 })

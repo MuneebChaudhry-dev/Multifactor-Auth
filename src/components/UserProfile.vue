@@ -137,7 +137,7 @@ const disable2FA = async () => {
     console.log(response.data)
     if (response.data.otp_disabled) {
       alert('OTP Disabled')
-      user.userData = response.data.user
+      user.updateUser(response.data.user)
     }
   })
 }

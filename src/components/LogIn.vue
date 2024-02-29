@@ -39,8 +39,7 @@ const router = useRouter()
 
 const loginUser = async (bodyData) => {
   await axios.post(`${import.meta.env.VITE_API_URL}/login`, bodyData).then((response) => {
-    user.userData = response.data.user
-    console.log(user.userData)
+    user.updateUser(response.data.user)
     if (response.data.status === 'success') {
       if (user.userData.otp_enabled) {
         router.push('/validate')
