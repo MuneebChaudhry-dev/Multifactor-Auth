@@ -17,7 +17,7 @@
             class="px-4 py-2 rounded-lg bg-amber-300 hover:bg-amber-400 font-medium"
             @click="toggle2FA"
           >
-            {{ userInfo.otp_enabled ? 'Disable 2FA' : 'Setup 2FA' }}
+            {{ userInfo?.otp_enabled ? 'Disable 2FA' : 'Setup 2FA' }}
           </button>
         </div>
       </div>
@@ -87,7 +87,7 @@
 </template>
 <script setup lang="">
 import { ref, watchEffect } from 'vue'
-import axios from 'axios'
+import { useAxios } from '../composable/axios'
 import QRCode from 'qrcode'
 
 import { userStore } from '@/stores/user'
@@ -113,33 +113,47 @@ const toggle2FA = () => {
 const setup2FA = async () => {
   is2FA.value = true
 
-  const userId = { user_id: userInfo.value?.id }
-  await axios.post(`${import.meta.env.VITE_API_URL}/otp/generate`, userId).then((response) => {
-    otpInfo.value = response.data
+  const payload = { user_id: userInfo.value?.id }
+  const { data, error } = await useAxios(
+    `${import.meta.env.VITE_API_URL}/otp/generate`,
+    'POST',
+    payload
+  )
+  if (data.value) {
+    otpInfo.value = data.value
     QRCode.toDataURL(otpInfo.value.otpauth_url).then((response) => {
       qrImageData.value = response
       showQR.value = true
     })
-  })
+  } else {
+    alert(error)
+  }
 }
 const verify2FA = async () => {
   const payload = { user_id: userInfo.value?.id, token: otp.value }
-  await axios.post(`${import.meta.env.VITE_API_URL}/otp/verify`, payload).then((response) => {
-    console.log(response.data)
-    if (response.data.otp_verified) {
-      alert('OTP Verified')
-      showQR.value = false
-    }
-  })
+  const { data, error } = await useAxios(
+    `${import.meta.env.VITE_API_URL}/otp/verify`,
+    'POST',
+    payload
+  )
+  if (data.value && data.value.otp_verified) {
+    alert('OTP Verified')
+    showQR.value = false
+  }
 }
 const disable2FA = async () => {
   const payload = { user_id: userInfo.value?.id }
+  const { data, error } = await useAxios(
+    `${import.meta.env.VITE_API_URL}/otp/disable`,
+    'POST',
+    payload
+  )
+  if (data.value && data.value.otp_disabled) {
+    alert('OTP Disabled')
+    updateUser(data.value.user)
+  }
   await axios.post(`${import.meta.env.VITE_API_URL}/otp/disable`, payload).then((response) => {
     console.log(response.data)
-    if (response.data.otp_disabled) {
-      alert('OTP Disabled')
-      updateUser(response.data.user)
-    }
   })
 }
 
