@@ -21,9 +21,9 @@ const signup = async () => {
       Email: user.value.email,
       Password: user.value.password
     }
-    const { data, error } = await useAxios(`/register`, 'POST', payload)
-    console.log(data.value)
-    if (data.value.status === 'success') {
+    const { data: userData, error } = await useAxios(`/register`, 'POST', payload)
+    console.log(userData.value)
+    if (userData.value.status === 'success') {
       router.push('/login')
     } else {
       alert('Error', error.value)

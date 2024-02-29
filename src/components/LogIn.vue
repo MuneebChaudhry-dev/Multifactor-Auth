@@ -4,7 +4,7 @@ import { useRouter } from 'vue-router'
 import { userStore } from '@/stores/user'
 import { useAxios } from '../composable/axios'
 
-const { getUser, updateUser } = userStore()
+const { updateUser } = userStore()
 const userEmail = ref('')
 const userPassword = ref('')
 const router = useRouter()
@@ -15,18 +15,19 @@ const login = async () => {
       Email: userEmail.value,
       Password: userPassword.value
     }
-    const { data, error } = await useAxios(`/login`, 'POST', payload)
+    const { data: userData, error } = await useAxios(`/login`, 'POST', payload)
 
-    if (data.value.status === 'success') {
-      updateUser(data.value.user)
-      if (data.value.user.otp_enabled) {
+    if (userData.value.status === 'success') {
+      updateUser(userData.value.user)
+      if (userData.value.user.otp_enabled) {
         router.push('/validate')
       } else {
-        alert(error.value)
         router.push('/profile')
       }
+    } else {
+      alert(error.value)
     }
-    console.log('Login REs', data.value)
+    console.log('Login REs', userData.value)
     userEmail.value = ''
     userPassword.value = ''
   }

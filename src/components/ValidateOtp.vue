@@ -11,8 +11,8 @@ const router = useRouter()
 const validate2FA = async () => {
   const user = getUser()
   const payload = { user_id: user.id, token: otp.value }
-  const { data, error } = await useAxios(`/otp/validate`, 'POST', payload)
-  if (data && data.value.otp_valid) {
+  const { data: authorizedUserData, error } = await useAxios(`/otp/validate`, 'POST', payload)
+  if (authorizedUserData.value && authorizedUserData.value.otp_valid) {
     router.push('/profile')
   } else {
     alert(error.value)

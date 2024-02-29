@@ -33,7 +33,7 @@ export const useAxios = async (url: string, method: string, payload: any = null)
       console.log('axios response', data.value)
     }
   } catch (err: any) {
-    error.value = err.data.message
+    error.value = err
   }
 
   return { data, error }
