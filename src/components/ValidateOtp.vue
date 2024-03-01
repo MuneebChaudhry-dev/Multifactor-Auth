@@ -3,6 +3,7 @@ import { ref } from 'vue'
 import { useAxios } from '../composable/axios'
 import { useRouter } from 'vue-router'
 import { userStore } from '@/stores/user'
+import BaseButton from './common/BaseButton.vue'
 
 const { getUser } = userStore()
 const otp = ref(null)
@@ -33,12 +34,8 @@ const validate2FA = async () => {
         placeholder="Authentication Code"
         v-model="otp"
       />
-      <button
-        class="w-full my-3 py-2 px-6 text-white font-medium bg-amber-400 rounded-lg"
-        @click="validate2FA"
-      >
-        Authenticate
-      </button>
+
+      <BaseButton type="primary" size="large" @btn-click="validate2FA"> Authenticate </BaseButton>
     </div>
   </section>
 </template>
