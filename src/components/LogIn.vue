@@ -4,6 +4,7 @@ import { useRouter } from 'vue-router'
 import { userStore } from '@/stores/user'
 import { useAxios } from '../composable/axios'
 import BaseButton from './common/BaseButton.vue'
+import BaseInput from './common/BaseInput.vue'
 
 const { updateUser } = userStore()
 const userEmail = ref('')
@@ -40,18 +41,8 @@ const login = async () => {
       <h2 class="text-black font-extrabold text-3xl text-center">Login</h2>
       <p class="text-center my-4">Add the following credentials</p>
 
-      <input
-        type="email"
-        class="p-2 mt-2 w-full text-lg border border-gray-300 rounded-lg outline-1 outline-amber-300"
-        placeholder="Email"
-        v-model="userEmail"
-      />
-      <input
-        type="password"
-        class="p-2 mt-2 w-full text-lg border border-gray-300 rounded-lg outline-1 outline-amber-300"
-        placeholder="Password"
-        v-model="userPassword"
-      />
+      <BaseInput type="email" placeholder="Email" v-model="userEmail" />
+      <BaseInput type="password" placeholder="Password" v-model="userPassword" />
 
       <BaseButton type="primary" size="large" @btn-click="login"> Login </BaseButton>
     </div>

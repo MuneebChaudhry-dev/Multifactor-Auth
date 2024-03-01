@@ -2,6 +2,8 @@
 import { ref, watchEffect } from 'vue'
 import { useAxios } from '../composable/axios'
 import BaseButton from './common/BaseButton.vue'
+import BaseInput from './common/BaseInput.vue'
+
 import QRCode from 'qrcode'
 
 import { userStore } from '@/stores/user'
@@ -104,13 +106,9 @@ watchEffect(() => {
               Verify Code
             </h4>
             <p class="py-3">For changing the setting, please verify the authentication code:</p>
-
-            <input
-              type="text"
-              class="p-2 text-lg border border-gray-300 rounded-lg outline-1 outline-amber-300"
-              placeholder="Authentication Code"
-              v-model="otp"
-            />
+            <div class="w-1/3">
+              <BaseInput type="text" placeholder="Authentication Code" v-model="otp" />
+            </div>
           </div>
           <div class="my-4 flex justify-start gap-4">
             <BaseButton type="secondary" size="small" @btn-click="closeVerification">

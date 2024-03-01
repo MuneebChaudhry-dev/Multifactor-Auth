@@ -4,6 +4,7 @@ import { useAxios } from '../composable/axios'
 import { useRouter } from 'vue-router'
 import { userStore } from '@/stores/user'
 import BaseButton from './common/BaseButton.vue'
+import BaseInput from './common/BaseInput.vue'
 
 const { getUser } = userStore()
 const otp = ref(null)
@@ -28,12 +29,7 @@ const validate2FA = async () => {
       <p class="text-center my-4">
         Open the two-step verification app from your mobile and get your verification code
       </p>
-      <input
-        type="text"
-        class="p-2 w-full text-lg border border-gray-300 rounded-lg outline-1 outline-amber-300"
-        placeholder="Authentication Code"
-        v-model="otp"
-      />
+      <BaseInput type="text" placeholder="Authentication Code" v-model="otp" />
 
       <BaseButton type="primary" size="large" @btn-click="validate2FA"> Authenticate </BaseButton>
     </div>
