@@ -65,30 +65,7 @@ watchEffect(() => {
 </script>
 <template>
   <div class="w-full bg-amber-400 p-8">
-    <div class="bg-white rounded p-16 flex justify-between gap-44" v-show="!showQR">
-      <div>
-        <h3 class="font-semibold text-2xl capitalize">personal page</h3>
-        <ul class="list-none mt-4 space-y-2">
-          <li class="text-wrap break-words">ID: {{ userInfo?.id }}</li>
-          <li>Name: {{ userInfo?.name }}</li>
-          <li>Email: {{ userInfo?.email }}</li>
-        </ul>
-      </div>
-      <div>
-        <h3 class="font-semibold text-2xl capitalize">mobile app authenticaiton (2FA)</h3>
-        <p class="mt-2">Secure your account with TOTP two factor authentication</p>
-        <div class="mt-2">
-          <button
-            class="px-4 py-2 rounded-lg bg-amber-300 hover:bg-amber-400 font-medium"
-            @click="toggle2FA"
-          >
-            {{ userInfo?.otp_enabled ? 'Disable 2FA' : 'Setup 2FA' }}
-          </button>
-        </div>
-      </div>
-    </div>
-    <!---Show QR here-->
-    <div class="bg-white rounded flex justify-center mt-8" v-show="showQR">
+    <div v-if="showQR" class="bg-white rounded flex justify-center mt-8">
       <div class="w-1/2 border border-gray-300 my-8">
         <div class="p-4 border-b border-gray-300">
           <h3 class="font-semibold text-2xl">Two-Factor Authentication (2FA)</h3>
@@ -143,8 +120,30 @@ watchEffect(() => {
             >
               Verify & Activate
             </button>
-            <button></button>
           </div>
+        </div>
+      </div>
+    </div>
+
+    <div v-else class="bg-white rounded p-16 flex justify-between gap-44">
+      <div>
+        <h3 class="font-semibold text-2xl capitalize">personal page</h3>
+        <ul class="list-none mt-4 space-y-2">
+          <li class="text-wrap break-words">ID: {{ userInfo?.id }}</li>
+          <li>Name: {{ userInfo?.name }}</li>
+          <li>Email: {{ userInfo?.email }}</li>
+        </ul>
+      </div>
+      <div>
+        <h3 class="font-semibold text-2xl capitalize">mobile app authenticaiton (2FA)</h3>
+        <p class="mt-2">Secure your account with TOTP two factor authentication</p>
+        <div class="mt-2">
+          <button
+            class="px-4 py-2 rounded-lg bg-amber-300 hover:bg-amber-400 font-medium"
+            @click="toggle2FA"
+          >
+            {{ userInfo?.otp_enabled ? 'Disable 2FA' : 'Setup 2FA' }}
+          </button>
         </div>
       </div>
     </div>

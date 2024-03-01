@@ -2,6 +2,7 @@
 import { ref } from 'vue'
 import { useAxios } from '../composable/axios'
 import { useRouter } from 'vue-router'
+import BaseButton from './common/BaseButton.vue'
 
 const router = useRouter()
 
@@ -63,12 +64,7 @@ const signup = async () => {
         placeholder="Confirm Password"
         v-model="user.confirmPass"
       />
-      <button
-        class="w-full my-3 py-2 px-6 text-white font-medium bg-amber-400 rounded-lg"
-        @click="signup"
-      >
-        Sign Up
-      </button>
+      <BaseButton @btn-click="signup"> Sign Up </BaseButton>
     </div>
   </section>
 </template>

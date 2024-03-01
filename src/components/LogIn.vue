@@ -3,6 +3,7 @@ import { ref } from 'vue'
 import { useRouter } from 'vue-router'
 import { userStore } from '@/stores/user'
 import { useAxios } from '../composable/axios'
+import BaseButton from './common/BaseButton.vue'
 
 const { updateUser } = userStore()
 const userEmail = ref('')
@@ -52,12 +53,7 @@ const login = async () => {
         v-model="userPassword"
       />
 
-      <button
-        class="w-full my-3 py-2 px-6 text-white font-medium bg-amber-400 rounded-lg"
-        @click="login"
-      >
-        Login
-      </button>
+      <BaseButton @btn-click="login"> Login </BaseButton>
     </div>
   </section>
 </template>
