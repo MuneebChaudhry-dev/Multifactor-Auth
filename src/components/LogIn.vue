@@ -53,7 +53,7 @@ const login = async () => {
         v-model="userPassword"
       />
 
-      <BaseButton @btn-click="login"> Login </BaseButton>
+      <BaseButton type="primary" size="large" @btn-click="login"> Login </BaseButton>
     </div>
   </section>
 </template>

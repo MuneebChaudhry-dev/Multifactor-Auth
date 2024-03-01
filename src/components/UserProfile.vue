@@ -1,6 +1,7 @@
 <script setup lang="">
 import { ref, watchEffect } from 'vue'
 import { useAxios } from '../composable/axios'
+import BaseButton from './common/BaseButton.vue'
 import QRCode from 'qrcode'
 
 import { userStore } from '@/stores/user'
@@ -13,7 +14,6 @@ const qrImageData = ref('')
 const otp = ref(null)
 const is2FA = ref(false)
 const showQR = ref(false)
-const isOtpEnabled = ref(false)
 
 const toggle2FA = () => {
   if (userInfo.value?.otp_enabled) {
@@ -58,7 +58,9 @@ const disable2FA = async () => {
     alert(error)
   }
 }
-
+const closeVerification = () => {
+  showQR.value = false
+}
 watchEffect(() => {
   userInfo.value = getUser()
 })
@@ -111,15 +113,12 @@ watchEffect(() => {
             />
           </div>
           <div class="my-4 flex justify-start gap-4">
-            <button class="py-2 px-6 text-gray-500 font-medium border border-slate-200 rounded-lg">
+            <BaseButton type="secondary" size="small" @btn-click="closeVerification">
               Close
-            </button>
-            <button
-              class="py-2 px-6 text-white font-medium bg-amber-400 rounded-lg"
-              @click="verify2FA"
-            >
+            </BaseButton>
+            <BaseButton type="primary" size="small" @btn-click="verify2FA">
               Verify & Activate
-            </button>
+            </BaseButton>
           </div>
         </div>
       </div>
@@ -138,12 +137,9 @@ watchEffect(() => {
         <h3 class="font-semibold text-2xl capitalize">mobile app authenticaiton (2FA)</h3>
         <p class="mt-2">Secure your account with TOTP two factor authentication</p>
         <div class="mt-2">
-          <button
-            class="px-4 py-2 rounded-lg bg-amber-300 hover:bg-amber-400 font-medium"
-            @click="toggle2FA"
-          >
+          <BaseButton type="primary" size="small" @btn-click="toggle2FA">
             {{ userInfo?.otp_enabled ? 'Disable 2FA' : 'Setup 2FA' }}
-          </button>
+          </BaseButton>
         </div>
       </div>
     </div>

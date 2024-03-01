@@ -64,7 +64,7 @@ const signup = async () => {
         placeholder="Confirm Password"
         v-model="user.confirmPass"
       />
-      <BaseButton @btn-click="signup"> Sign Up </BaseButton>
+      <BaseButton type="primary" size="large" @btn-click="signup"> Sign Up </BaseButton>
     </div>
   </section>
 </template>
