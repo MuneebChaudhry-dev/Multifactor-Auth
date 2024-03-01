@@ -1,5 +1,5 @@
 <script setup lang="">
-import { ref, watchEffect } from 'vue'
+import { ref, watchEffect, onMounted } from 'vue'
 import { useAxios } from '../composable/axios'
 import BaseButton from './common/BaseButton.vue'
 import BaseInput from './common/BaseInput.vue'
@@ -44,6 +44,7 @@ const verify2FA = async () => {
   const payload = { user_id: userInfo.value?.id, token: otp.value }
   const { data: verifiedUserData, error } = await useAxios(`/otp/verify`, 'POST', payload)
   if (verifiedUserData.value && verifiedUserData.value.otp_verified) {
+    userInfo.value = getUser()
     alert('OTP Verified')
     showQR.value = false
   } else {
@@ -63,7 +64,7 @@ const disable2FA = async () => {
 const closeVerification = () => {
   showQR.value = false
 }
-watchEffect(() => {
+onMounted(() => {
   userInfo.value = getUser()
 })
 </script>
