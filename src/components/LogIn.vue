@@ -17,7 +17,7 @@ const login = async () => {
       Email: userEmail.value,
       Password: userPassword.value
     }
-    const { data: userData, error } = await useAxios(`/login`, 'POST', payload)
+    const { data: userData, error } = await useAxios(`/login`, 'post', payload)
 
     if (userData.value.status === 'success') {
       updateUser(userData.value.user)

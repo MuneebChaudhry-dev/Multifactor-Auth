@@ -29,7 +29,7 @@ const setup2FA = async () => {
   is2FA.value = true
 
   const payload = { user_id: userInfo.value?.id }
-  const { data: otpData, error } = await useAxios(`/otp/generate`, 'POST', payload)
+  const { data: otpData, error } = await useAxios(`/otp/generate`, 'post', payload)
   if (otpData.value) {
     otpInfo.value = otpData.value
     QRCode.toDataURL(otpInfo.value.otpauth_url).then((response) => {
@@ -42,7 +42,7 @@ const setup2FA = async () => {
 }
 const verify2FA = async () => {
   const payload = { user_id: userInfo.value?.id, token: otp.value }
-  const { data: verifiedUserData, error } = await useAxios(`/otp/verify`, 'POST', payload)
+  const { data: verifiedUserData, error } = await useAxios(`/otp/verify`, 'post', payload)
   if (verifiedUserData.value && verifiedUserData.value.otp_verified) {
     userInfo.value = getUser()
     alert('OTP Verified')
@@ -53,7 +53,7 @@ const verify2FA = async () => {
 }
 const disable2FA = async () => {
   const payload = { user_id: userInfo.value?.id }
-  const { data: userData, error } = await useAxios(`/otp/disable`, 'POST', payload)
+  const { data: userData, error } = await useAxios(`/otp/disable`, 'post', payload)
   if (userData.value && userData.value.otp_disabled) {
     alert('OTP Disabled')
     updateUser(userData.value.user)
