@@ -112,10 +112,10 @@ onMounted(() => {
             </div>
           </div>
           <div class="my-4 flex justify-start gap-4">
-            <BaseButton type="secondary" size="small" @btn-click="closeVerification">
+            <BaseButton type="secondary" size="small" @click="closeVerification">
               Close
             </BaseButton>
-            <BaseButton type="primary" size="small" @btn-click="verify2FA">
+            <BaseButton type="primary" size="small" @click="verify2FA">
               Verify & Activate
             </BaseButton>
           </div>
@@ -136,7 +136,7 @@ onMounted(() => {
         <h3 class="font-semibold text-2xl capitalize">mobile app authenticaiton (2FA)</h3>
         <p class="mt-2">Secure your account with TOTP two factor authentication</p>
         <div class="mt-2">
-          <BaseButton type="primary" size="small" @btn-click="toggle2FA">
+          <BaseButton type="primary" size="small" @click="toggle2FA">
             {{ userInfo?.otp_enabled ? 'Disable 2FA' : 'Setup 2FA' }}
           </BaseButton>
         </div>

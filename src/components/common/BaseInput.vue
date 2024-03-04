@@ -1,13 +1,12 @@
 <script setup>
+const modelValue = defineModel({ type: String })
+
 const props = defineProps({
   type: {
     type: String,
     default: 'text'
   },
   placeholder: {
-    type: String
-  },
-  modelValue: {
     type: String
   }
 })
@@ -17,8 +16,7 @@ const props = defineProps({
   <input
     :type="type"
     :placeholder="placeholder"
-    :value="modelValue"
-    @input="$emit('update:modelValue', $event.target.value)"
+    v-model="modelValue"
     class="p-2 mt-2 w-full text-lg border border-gray-300 rounded-lg outline-1 outline-amber-300"
   />
 </template>

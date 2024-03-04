@@ -31,7 +31,7 @@ const validate2FA = async () => {
       </p>
       <BaseInput type="text" placeholder="Authentication Code" v-model="otp" />
 
-      <BaseButton type="primary" size="large" @btn-click="validate2FA"> Authenticate </BaseButton>
+      <BaseButton type="primary" size="large" @click="validate2FA"> Authenticate </BaseButton>
     </div>
   </section>
 </template>

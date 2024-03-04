@@ -44,7 +44,7 @@ const login = async () => {
       <BaseInput type="email" placeholder="Email" v-model="userEmail" />
       <BaseInput type="password" placeholder="Password" v-model="userPassword" />
 
-      <BaseButton type="primary" size="large" @btn-click="login"> Login </BaseButton>
+      <BaseButton type="primary" size="large" @click="login"> Login </BaseButton>
     </div>
   </section>
 </template>

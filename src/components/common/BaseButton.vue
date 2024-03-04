@@ -14,7 +14,6 @@ const props = defineProps({
       ' text-white  bg-amber-400 ': type === 'primary',
       'my-3 py-2 rounded-lg font-medium ': true
     }"
-    @click="$emit('btn-click')"
   >
     <slot> Click Me! </slot>
   </button>
