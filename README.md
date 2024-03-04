@@ -1,46 +1,75 @@
-# multifactor-auth
+# Multifactor-Auth
 
-This template should help get you started developing with Vue 3 in Vite.
+A web interface developed for two-factor authentication of user using Google Authenticator or Authy.
 
-## Recommended IDE Setup
+## Getting Started
 
-[VSCode](https://code.visualstudio.com/) + [Volar](https://marketplace.visualstudio.com/items?itemName=Vue.volar) (and disable Vetur) + [TypeScript Vue Plugin (Volar)](https://marketplace.visualstudio.com/items?itemName=Vue.vscode-typescript-vue-plugin).
+These guidelines will assist you in obtaining a copy of the project, enabling its execution on your local machine for development purposes. Refer to deployment notes for instructions on deploying the project on a live system.
 
-## Type Support for `.vue` Imports in TS
+## Prerequisites
 
-TypeScript cannot handle type information for `.vue` imports by default, so we replace the `tsc` CLI with `vue-tsc` for type checking. In editors, we need [TypeScript Vue Plugin (Volar)](https://marketplace.visualstudio.com/items?itemName=Vue.vscode-typescript-vue-plugin) to make the TypeScript language service aware of `.vue` types.
+- **Node.js >= 18**
 
-If the standalone TypeScript plugin doesn't feel fast enough to you, Volar has also implemented a [Take Over Mode](https://github.com/johnsoncodehk/volar/discussions/471#discussioncomment-1361669) that is more performant. You can enable it by the following steps:
+  - Download and install the latest version of Node.js from [nodejs.org](https://nodejs.org).
+  - _(Recommended)_ Use [nvm](https://github.com/nvm-sh/nvm) for version management.
 
-1. Disable the built-in TypeScript Extension
-    1) Run `Extensions: Show Built-in Extensions` from VSCode's command palette
-    2) Find `TypeScript and JavaScript Language Features`, right click and select `Disable (Workspace)`
-2. Reload the VSCode window by running `Developer: Reload Window` from the command palette.
+- **Package Manager: npm or yarn**
+  - **npm:** It comes bundled with Node.js. Verify its installation by running `npm -v` in your terminal.
+  - **yarn:** If you prefer using yarn, install it globally by following the instructions on [yarnpkg.com](https://yarnpkg.com).
 
-## Customize configuration
+## Project Installation and Execution
 
-See [Vite Configuration Reference](https://vitejs.dev/config/).
+1. Clone the repo in your desired directory
 
-## Project Setup
+```bash
+git@github.com:MuneebChaudhry-dev/Multifactor-Auth.git
+```
 
-```sh
+2. Install the project dependencies by using the following command
+
+```bash
+yarn install
+```
+
+OR
+
+```bash
 npm install
 ```
 
-### Compile and Hot-Reload for Development
+3. Set your api path in `.env` file
 
-```sh
-npm run dev
+4. Run the project using the provided script
+
+```bash
+yarn dev
 ```
 
-### Type-Check, Compile and Minify for Production
+Now the project start running on your local machine.
 
-```sh
-npm run build
+## Deployment
+
+### Prerequisites
+
+Before deploying to the server, it is recommended to test the application locally to avoid any errors. Run the following script:
+
+```bash
+yarn build
 ```
 
-### Lint with [ESLint](https://eslint.org/)
+## Built With
 
-```sh
-npm run lint
-```
+- [Vue3](https://vuejs.org/) - The frontend framework used
+- [yarn](https://yarnpkg.com/) - Pacakge Manager
+- [Tailwind](https://tailwindcss.com/) - Used to style the components
+- [Pinia](https://pinia.vuejs.org/) - Used to manage states
+
+## Versioning
+
+We use [SemVer](http://semver.org/) for versioning. For the versions available, see the [tags on this repository](https://github.com/spongeling/sponge-ui/tags).
+
+## Contributors
+
+| Contributor  | Role               |
+| ------------ | ------------------ |
+| Muneeb Ahmad | Frontend Developer |

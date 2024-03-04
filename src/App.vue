@@ -4,12 +4,10 @@ import { RouterLink, RouterView } from 'vue-router'
 
 <template>
   <header>
-    <HelloWorld msg="You did it!" />
-
     <nav class="p-4 w-full flex justify-end gap-5">
-      <RouterLink to="/">Home</RouterLink>
-      <RouterLink to="/">Profile</RouterLink>
-      <RouterLink to="/">Logout</RouterLink>
+      <RouterLink to="/" active-class="text-amber-400">Home</RouterLink>
+      <RouterLink to="/profile" active-class="text-amber-400">Profile</RouterLink>
+      <RouterLink to="/login" active-class="text-amber-400">Logout</RouterLink>
     </nav>
   </header>
 
